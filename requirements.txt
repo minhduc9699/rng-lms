@@ -1,3 +1,5 @@
-apscheduler
 tornado
 requests
+apscheduler
+google-cloud-firestore
+addict
