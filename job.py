@@ -11,7 +11,7 @@ sched = BlockingScheduler(timezone="Asia/Ho_Chi_Minh")
 def timed_job():
   print("Hello from *tk-police*, now is {0}".format(datetime.datetime.now()))
 
-@sched.scheduled_job('cron', day_of_week='mon-fri', hour=14)
+@sched.scheduled_job('cron', day_of_week='mon-sun', hour=14)
 def scheduled_job():
   telegram.post(firebase.sprint_message())
 
