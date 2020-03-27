@@ -1,4 +1,3 @@
-from google.cloud import firestore
 import os
 from addict import Dict
 from datetime import datetime, timezone, timedelta

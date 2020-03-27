@@ -1,10 +1,10 @@
 import requests
 import datetime
 
-def post(text, mode=None):
+def post(text, chat_id=-325010757, mode=None):
   url = "https://api.telegram.org/bot1022949386:AAFJFbfkBTcuabBuQ8nvFkBYFOLm-VOU6iI/sendMessage"
   data = {
-    "chat_id": -325010757,
+    "chat_id": chat_id,
     "text": text,
     "parse_mode": mode if mode is not None else "Markdown",
   }
