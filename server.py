@@ -9,32 +9,17 @@ import json
 from addict import Dict
 from telegram import post
 
+# APIs
+from api.azure import CrmAzureHandler
+
 define("environment", default="development", help="Pick you environment", type=str)
 define("site_title", default="Tornado Example", help="Site Title", type=str)
 define("cookie_secret", default="sooooooosecret", help="Your secret cookie dough", type=str)
 define("port", default="8000", help="Listening port", type=str)
 
-with open('config.json') as config_file:
-  config_file_content = config_file.read()
-  config = json.loads(config_file_content)
-  telegram_routes = { route['projectId']: route for route in config['telegramRoutes']}
-
 class MainHandler(tornado.web.RequestHandler):
   def get(self):
     self.write({"Hello": "world"})
-
-class CrmAzureHandler(tornado.web.RequestHandler):
-  def get(self):
-    self.write({"Hello": "crm/azure"})
-  def post(self):
-    update = Dict(json.loads(self.request.body))
-    project_id = update.resourceContainers.project.id
-    try:
-      chat_id = telegram_routes[project_id]['chatId']
-      post(update.detailedMessage.markdown.replace("*", ""), chat_id, "Markdown")
-    except KeyError:
-      print('Error: "projectId" NOT found')
-    self.write(json.loads(self.request.body))
 
 class FourOhFourHandler(tornado.web.RequestHandler):
   def get(self, slug):
