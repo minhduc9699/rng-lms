@@ -35,11 +35,6 @@ def add_qa_task(update):
   add_task(qa_task_title, [qa_task_link])
 
 def create_qa_task_if_needed(update):
-  event_type = update.eventType
-  resource = update.resource
-  update_info = resource.fields
-  fields = resource.revision.fields
-  title = fields['System.Title']
   if should_add_qa_task(update):
     add_qa_task(update)
 
