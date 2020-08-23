@@ -23,8 +23,12 @@ def should_add_qa_task(update):
 
 def add_qa_task(update):
   resource = update.resource
+  revision = resource.revision
+
   work_item_id = resource.workItemId
   link = resource._links.parent.href
+  area = revision.fields['System.AreaPath'] # Project
+  iteration_path = revision.fields['System.IterationPath'] # Srpint
   
   # Prepare title and link back to closed work item
   qa_task_title = f'Perform Quality Assurance on #{work_item_id}'
@@ -32,7 +36,13 @@ def add_qa_task(update):
     'value': link,
     'rel': 'System.LinkTypes.Hierarchy-Reverse' # Parent link type
   }
-  add_task(qa_task_title, [qa_task_link])
+  
+  add_task({
+    'title': qa_task_title,
+    'area': area,
+    'iteration_path': iteration_path,
+    'links': [qa_task_link]
+  })
 
 def create_qa_task_if_needed(update):
   if should_add_qa_task(update):
