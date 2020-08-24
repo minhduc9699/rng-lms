@@ -2,3 +2,5 @@ tornado
 requests
 apscheduler
 addict
+azure-devops
+pprint
