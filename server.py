@@ -11,6 +11,7 @@ from telegram import post
 
 # APIs
 from api.azure import CrmAzureHandler
+from api.worker_heartbeat import WorkerHeartBeatHandler
 
 define("environment", default="development", help="Pick you environment", type=str)
 define("site_title", default="Tornado Example", help="Site Title", type=str)
@@ -28,6 +29,7 @@ class FourOhFourHandler(tornado.web.RequestHandler):
 class Application(tornado.web.Application):
     def __init__(self):
       handlers = [
+        (r"/workers:heartbeat", WorkerHeartBeatHandler),
         (r"/azure", CrmAzureHandler),
         (r"/", MainHandler),
         (r"/([^/]+)", FourOhFourHandler),

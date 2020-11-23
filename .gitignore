@@ -1,3 +1,5 @@
 config.json
+worker_heartbeat.json
 __pycache__
 *.pyc
+
