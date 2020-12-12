@@ -57,4 +57,3 @@ def add_task(config):
   except Exception as err:
     print(err)
     return None
-  
