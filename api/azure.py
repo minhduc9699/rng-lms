@@ -7,6 +7,7 @@ from telegram import post
 from helpers.map_keys import map_keys
 from azure import add_task
 
+
 def should_add_qa_task(update):
   resource = update.resource
   update_info = resource.fields
@@ -29,19 +30,31 @@ def add_qa_task(update):
   link = resource._links.parent.href
   area = revision.fields['System.AreaPath'] # Project
   iteration_path = revision.fields['System.IterationPath'] # Srpint
+  work_item_type = revision.fields['System.WorkItemType']
   
   # Prepare title and link back to closed work item
-  qa_task_title = f'Perform Quality Assurance on #{work_item_id}'
-  qa_task_link = {
-    'value': link,
-    'rel': 'System.LinkTypes.Hierarchy-Reverse' # Parent link type
+  work_item_link_type = {
+    'parent': 'System.LinkTypes.Hierarchy-Reverse',
+    'related': 'System.LinkTypes.Related'
   }
-  
+
+  qa_task_title = f'Perform Quality Assurance on #{work_item_id}'
+  qa_task_relation_type = work_item_link_type['related'] if work_item_type != 'User Story' else work_item_link_type['parent']
+  qa_task_links = [{
+    'value': link,
+    'rel': qa_task_relation_type # Parent link type
+  }]
+  for relation in revision.relations: # Set up qa task relation with completed task parent
+    if relation.rel == work_item_link_type['parent'] and qa_task_relation_type != work_item_link_type['parent']:
+      qa_task_links.append({
+        'value': relation.url,
+        'rel': work_item_link_type['parent']
+      })
   add_task({
     'title': qa_task_title,
     'area': area,
     'iteration_path': iteration_path,
-    'links': [qa_task_link]
+    'links': qa_task_links
   })
 
 def create_qa_task_if_needed(update):
