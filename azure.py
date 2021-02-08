@@ -8,6 +8,21 @@ azure_pat = Config.get().azurePATToken
 wit_end_point = f'{azure_api_url}/wit'
 work_item_end_point = f'{wit_end_point}/workitems'
 task_end_point = f'{work_item_end_point}/$task?api-version=6.0-preview.3'
+auth=HTTPBasicAuth(azure_username, azure_pat)
+
+
+def fetch_task_detail(task_url):
+  try:
+    r = requests.get(
+      task_url,
+      headers={'Content-Type': 'application/json-patch+json'},
+      auth=auth
+    )
+    return r.json()
+  except Exception as err: 
+    print(err)
+    return None
+
 
 def add_task(config):
   title = config['title']
@@ -47,7 +62,6 @@ def add_task(config):
 
     data = [title_body] + [area_body] + [iteration_body] + links_body
     
-    auth=HTTPBasicAuth(azure_username, azure_pat)
     r = requests.post(task_end_point, json=data, 
       headers={'Content-Type': 'application/json-patch+json'},
       auth=auth
