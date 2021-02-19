@@ -14,6 +14,11 @@ def should_add_recheck_task(update):
   fields = resource.revision.fields
   relations = resource.revision.relations
   title = fields['System.Title']
+  task_state = update_info.get('System.State', {})
+
+  # Ignore new task created
+  if task_state == 'New':
+    return False
 
   # Check if recheck task exist
   for relation in relations:
@@ -24,8 +29,8 @@ def should_add_recheck_task(update):
         return False
 
   # Only add recheck task when a non-QA, non-recheck task was closed
-  if 'System.State' in update_info \
-    and update_info['System.State']['newValue'] == 'Closed' \
+  if 'newValue' in task_state \
+    and task_state.get('newValue', '') == 'Closed' \
       and 'Perform QA' not in title \
         and 'Perform Quality Assurance' not in title \
           and 'Perform recheck' not in title:
@@ -38,10 +43,15 @@ def should_add_qa_task(update):
   update_info = resource.fields
   fields = resource.revision.fields
   title = fields['System.Title']
+  task_state = update_info.get('System.State', {})
   
+  # Ignore new task created
+  if task_state == 'New':
+    return False
+
   # QA task should be added only a non-QA task was closed
-  if 'System.State' in update_info \
-    and update_info['System.State']['newValue'] == 'Closed' \
+  if 'newValue' in task_state \
+    and task_state.get('newValue', '') == 'Closed' \
       and 'Perform QA' not in title \
         and 'Perform Quality Assurance' not in title \
           and 'Perform recheck' not in title:
