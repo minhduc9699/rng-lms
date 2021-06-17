@@ -8,6 +8,7 @@ from tornado.options import define, options
 import json
 from addict import Dict
 from telegram import post
+from task_queues import azure_task_queue
 
 # APIs
 from api.azure import CrmAzureHandler
@@ -47,9 +48,11 @@ def main():
   tornado.options.parse_command_line()
   print("Server listening on port " + str(options.port))
   logging.getLogger().setLevel(logging.DEBUG)
+  azure_task_queue.AzureTaskQueue.setup()
+  tornado.ioloop.IOLoop.current().add_callback(azure_task_queue.AzureTaskQueue.run_azure_worker)
   http_server = tornado.httpserver.HTTPServer(Application())
   http_server.listen(options.port)
-  tornado.ioloop.IOLoop.instance().start()
+  tornado.ioloop.IOLoop.current().start()
 
 if __name__ == "__main__":
   main()
