@@ -9,6 +9,7 @@ import json
 from addict import Dict
 from telegram import post
 from task_queues import azure_task_queue
+from cronjob import daily_scrum_reminder
 
 # APIs
 from api.azure import CrmAzureHandler
@@ -45,6 +46,7 @@ class Application(tornado.web.Application):
       tornado.web.Application.__init__(self, handlers, **settings)
 
 def main():
+  daily_scrum_reminder.sched.start()
   tornado.options.parse_command_line()
   print("Server listening on port " + str(options.port))
   logging.getLogger().setLevel(logging.DEBUG)
