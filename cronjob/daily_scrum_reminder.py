@@ -7,6 +7,7 @@ sched = BackgroundScheduler(timezone='Asia/Ho_Chi_Minh')
 def run():
   telegram.post(
     '''Its time for scrum guys!
-https://memegenerator.net/img/instances/76612783/oh-yes-its-meeting-time-.jpg''',
+https://memegenerator.net/img/instances/76612783/oh-yes-its-meeting-time-.jpg
+link meeting: https://meet.google.com/rok-ojxt-dqt''',
     chat_id=-466348665
   )
