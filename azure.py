@@ -149,7 +149,7 @@ def add_related_task(update, task_type):
   }
 
   task_title = task_title_map[task_type]
-  task_relation_type = work_item_link_type['related'] if work_item_type != 'User Story' else work_item_link_type['parent']
+  task_relation_type = work_item_link_type['related'] if 'User Story' in work_item_type else work_item_link_type['parent']
   task_links = [{
     'value': link,
     'rel': task_relation_type # Parent link type
