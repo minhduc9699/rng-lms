@@ -1,10 +1,11 @@
 import requests
 from string import Template
 from datetime import datetime
+from env.config import Config
 
 
 def get_metrics(query):
-  PROMETHEUS_API = 'http://localhost:9090/api/v1'
+  PROMETHEUS_API = Config.get().sentry.prometheus
   res = requests.get(f'{PROMETHEUS_API}/query', params={'query': query})
   payload = res.json()
   return payload['data']
