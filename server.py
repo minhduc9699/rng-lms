@@ -14,6 +14,7 @@ from cronjob import daily_scrum_reminder
 # APIs
 from api.azure import CrmAzureHandler
 from api.worker_heartbeat import WorkerHeartBeatHandler
+from api.sentry import SentryHandler
 
 define("environment", default="development", help="Pick you environment", type=str)
 define("site_title", default="Tornado Example", help="Site Title", type=str)
@@ -33,6 +34,7 @@ class Application(tornado.web.Application):
       handlers = [
         (r"/workers:heartbeat", WorkerHeartBeatHandler),
         (r"/azure", CrmAzureHandler),
+        (r"/sentry", SentryHandler),
         (r"/", MainHandler),
         (r"/([^/]+)", FourOhFourHandler),
       ]
