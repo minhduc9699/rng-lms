@@ -1,4 +1,4 @@
 # mx-bot
 
 # Run
-`python --port=3000`
+`python server.py --port=3000`
