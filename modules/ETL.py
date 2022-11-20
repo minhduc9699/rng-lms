@@ -3,7 +3,7 @@ from addict import Dict
 import json
 from infrastructure.tasks_queues.tasks_queue import TaskQueue
 from infrastructure.mysql.main import get_connection
-from domains.main import ETL
+# from domains.main import ETL
 import tornado.gen
 
 def save_students(students):
@@ -48,7 +48,7 @@ class ETLHandler(tornado.web.RequestHandler):
     update = Dict(json.loads(self.request.body))
     message = {
       **update,
-      'job': ETL,
+      'job': self.get,
     }
     yield TaskQueue.queued_update.put(message)
     self.write(json.loads(self.request.body))

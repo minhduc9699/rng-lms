@@ -21,7 +21,7 @@ def main():
   print("Server listening on port " + str(options.port))
   logging.getLogger().setLevel(logging.DEBUG)
   tornado.ioloop.IOLoop.current().add_callback(TaskQueue.run_job)
-  http_server = tornado.httpserver.HTTPServer(application())
+  http_server = tornado.httpserver.HTTPServer(application.Application())
   http_server.listen(options.port)
   tornado.ioloop.IOLoop.current().start()
 
