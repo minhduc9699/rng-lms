@@ -1,10 +1,8 @@
 from tornado.queues import Queue
-from azure import create_related_task_if_needed, notify_telegram_group
 import json
 import tornado.gen
-import time
 
-class AzureTaskQueue():
+class TaskQueue():
   queued_update = None
 
   @classmethod
@@ -13,16 +11,16 @@ class AzureTaskQueue():
 
   @classmethod
   @tornado.gen.coroutine
-  def run_azure_worker(cls):
+  def run_job(cls):
     if not cls.queued_update:
       raise Exception('Not initialized')
     else:
       while True:
         try:
-          update = yield cls.queued_update.get()
-          create_related_task_if_needed(update)
-          notify_telegram_group(update)
+          message = yield cls.queued_update.get()
+          job = message['job']
+          if job: job(message)
           with open('update_2.json', 'w') as f:
-            f.write(json.dumps(update))
+            f.write(json.dumps(message))
         except Exception as errors:
           raise Exception(errors)
