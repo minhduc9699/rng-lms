@@ -19,7 +19,8 @@ class TaskQueue():
         try:
           message = yield cls.queued_update.get()
           job = message['job']
-          if job: job(message)
+          data = message['data']
+          if job: job(data)
           with open('update_2.json', 'w') as f:
             f.write(json.dumps(message))
         except Exception as errors:
