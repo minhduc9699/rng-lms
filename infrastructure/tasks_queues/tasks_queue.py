@@ -18,10 +18,10 @@ class TaskQueue():
       while True:
         try:
           message = yield cls.queued_update.get()
+          print('running queue')
+          print(message)
           job = message['job']
           data = message['data']
           if job: job(data)
-          with open('update_2.json', 'w') as f:
-            f.write(json.dumps(message))
         except Exception as errors:
           raise Exception(errors)

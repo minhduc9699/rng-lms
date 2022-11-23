@@ -16,11 +16,11 @@ class ETLHandler(tornado.web.RequestHandler):
 
   @tornado.gen.coroutine
   def post(self):
-    body = Dict(json.loads(self.request.body))
+    body = json.loads(self.request.body)
     job_type = body['job_type']
     data = body['data']
     message = {
-      data: data,
+      'data': data,
       'job': job_map[job_type],
     }
     yield TaskQueue.queued_update.put(message)

@@ -4,24 +4,19 @@ connection = get_connection()
 def save_students(students):
   idstudent = students["idstudent"]
   name = students["name"]
-  DOB = students["DOB"]
+  DOB = str(students["DOB"])
   phone = students["phone"]
 
   cursor = connection.cursor()
-  sql = f"""INSERT INTO students (idstudent, name, DOB, phone) VALUES ("{idstudent}", {name}", "{DOB}", "{phone}");"""
-  try: 
-    #executing the SQL command 
-    cursor.execute(sql)
+  sql = f"""INSERT INTO students (idstudent, name, DOB, phone) VALUES ("{idstudent}", "{name}", "{DOB}", "{phone}");"""
+  print(sql)
+  #executing the SQL command 
+  cursor.execute(sql)
 
-    #Commit your changes in the database
-    connection.commit()
-  
-  except:
-    #Rolling back in case of error 
-    connection.rollback()
+  #Commit your changes in the database
+  connection.commit()
 
-  #Closing the connection 
-  connection.close()
+  #Rolling back in case of error 
 
   return
 
@@ -32,21 +27,14 @@ def save_classes(classes):
 
   cursor = connection.cursor()
   sql = f"""INSERT INTO `class` (idclass, nameOfClass, nameOfTeacher) VALUES ("{idclass}", "{nameOfClass}", "{nameOfTeacher}");"""
-  print(sql)
 
-  try: 
-    #executing the SQL command 
-    cursor.execute(sql)
+  #executing the SQL command 
+  cursor.execute(sql)
 
-    #Commit your changes in the database
-    connection.commit()
-  
-  except:
-    #Rolling back in case of error 
-    connection.rollback()
+  #Commit your changes in the database
+  connection.commit()
 
-  #Closing the connection 
-  connection.close()
+  #Rolling back in case of error 
   return
 
 def save_headcount(headcount):
@@ -57,18 +45,11 @@ def save_headcount(headcount):
 
   cursor = connection.cursor()
   sql = f"""INSERT INTO headcount (idheadcount, idclass, idstudent, timestamp) VALUES ("{idheadcount}", "{idclass}", "{idstudent}", "{timestamp}");"""
-  try: 
-    #executing the SQL command 
-    cursor.execute(sql)
+  #executing the SQL command 
+  cursor.execute(sql)
 
-    #Commit your changes in the database
-    connection.commit()
-  
-  except:
-    #Rolling back in case of error 
-    connection.rollback()
+  #Commit your changes in the database
+  connection.commit()
 
-  #Closing the connection 
-  connection.close()
   return
 
